@@ -1,7 +1,5 @@
 .DS_Store
 .vscode/
-test*
 *.o
 *.d
 *.a
-
