@@ -4,8 +4,12 @@ SRCN = ft_printf.c
 HDRN = ft_printf.h
 BSRCN =
 
-SRCPATH = ./
-INCPATH = ./
+LIBFTNAME = ft
+LIBFTPATH = libft/
+LIBFTA = ${LIBFTPATH}lib${LIBFTNAME}.a
+SRCPATH =
+INCPATH = ${LIBFTPATH}
+
 
 SRCS = ${addprefix ${SRCPATH}, ${SRCN}}
 BSRCS = ${addprefix ${SRCPATH}, ${BSRCN}}
@@ -19,35 +23,41 @@ CC = gcc
 
 RM	= rm -f
 
-CFLAG = -Wall -Wextra -Werror -D
+CFLAG = -Wall -Wextra -Werror
 
 all:	${NAME}
 
 ${NAME}:	${OBJ}
-	${CC} ${CFLAG} -o $@ ${OBJ}
+	${MAKE} -C ${LIBFTPATH} NAME="lib${LIBFTNAME}.a"
+	cp ${LIBFTA} ${NAME}
+	ar rcsU ${NAME} $?
 
 test:	${OBJ}
-	${CC} ${CFLAG} -o $@ ${OBJ}
+	${CC} ${CFLAG} -o $@ -L${LIBFTPATH} ${OBJ} -l${LIBFTNAME}
 
 %.o : %.c
-	${CC} ${CFLAG} -MMD -c $< -o $@ -I ${INCPATH}
+	${CC} ${CFLAG} -MMD -c $< -o $@ -I${INCPATH}
 
 include ${wildcard ${DPDS}}
 
+#${LIBFTA}:
+#	${MAKE} -C ${LIBFTPATH} NAME="lib${LIBFTNAME}.a"
+
 debug:
-	@make CFLAG="${CFLAG} -g3" SRCN="main.c ${SRCN}" test
+	${MAKE} -C ${LIBFTPATH} NAME="lib${LIBFTNAME}.a"
+	@${MAKE} CFLAG="${CFLAG} -g3" SRCN="${SRCN} main.c" test
 
 bonus:
-	@make SRCN="${BSRCN}" all
+	@${MAKE} SRCN="${BSRCN}" all
 
 clean:
 	${RM} ${OBJ} ${BOBJ} ${DPDS}
-	cd ${LIBFT} && ${MAKE} clean
+	cd ${LIBFTPATH} && ${MAKE} NAME="lib${LIBFTNAME}.a" clean
 
 fclean:	clean
-	${RM} ${NAME}
-	${MAKE} -C ${LIBFT} clean
+	${RM} ${NAME} test main.o main.d
+	${MAKE} -C ${LIBFTPATH} NAME="lib${LIBFTNAME}.a" fclean
 
 re:	fclean all
 
-.PHONY: all bonus clean fclean re
+.PHONY: all bonus clean fclean re debug

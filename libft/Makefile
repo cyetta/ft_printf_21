@@ -31,15 +31,14 @@ CFLAG = -Wall -Wextra -Werror
 all:	${NAME}
 
 ${NAME}:	${OBJ}
-	ar rc ${NAME} $?
-	ranlib ${NAME}
+	ar rcsU ${NAME} $?
 
 %.o : %.c
 	${CC} ${CFLAG} -MMD -c $< -o $@ -I ${INCPATH}
 
 include ${wildcard ${DPDS}}
 
-bonus: 
+bonus:
 	@make  SRCN="${SRCN} ${BSRCN}" all
 
 clean:

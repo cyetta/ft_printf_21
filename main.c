@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/22 00:59:30 by cyetta            #+#    #+#             */
-/*   Updated: 2021/11/14 20:55:03 by cyetta           ###   ########.fr       */
+/*   Updated: 2021/11/15 23:03:26 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,11 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include "ft_printf.h"
+#include "libft/libft.h"
 
 int	main(void)
 {
-	printf("hello world\n");
-
+	printf("hello world %d\n", (int)ft_strlen("hello world"));
+	ft_printf("hello world\n");
 	return (0);
 }
