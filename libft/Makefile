@@ -31,7 +31,7 @@ CFLAG = -Wall -Wextra -Werror
 all:	${NAME}
 
 ${NAME}:	${OBJ}
-	ar rcsU ${NAME} $?
+	ar rcs ${NAME} $?
 
 %.o : %.c
 	${CC} ${CFLAG} -MMD -c $< -o $@ -I ${INCPATH}

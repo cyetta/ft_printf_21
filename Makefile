@@ -1,6 +1,6 @@
 NAME = libftprintf.a
 
-SRCN = ft_printf.c
+SRCN = ft_printf.c ft_printf_char.c ft_printf_dec.c
 HDRN = ft_printf.h
 BSRCN =
 
@@ -30,7 +30,7 @@ all:	${NAME}
 ${NAME}:	${OBJ}
 	${MAKE} -C ${LIBFTPATH} NAME="lib${LIBFTNAME}.a"
 	cp ${LIBFTA} ${NAME}
-	ar rcsU ${NAME} $?
+	ar rcs ${NAME} $?
 
 test:	${OBJ}
 	${CC} ${CFLAG} -o $@ -L${LIBFTPATH} ${OBJ} -l${LIBFTNAME}
