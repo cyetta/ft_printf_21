@@ -1,6 +1,6 @@
 NAME = libftprintf.a
 
-SRCN = ft_printf.c ft_printf_char.c ft_printf_dec.c
+SRCN = ft_printf.c ft_printf_char.c ft_printf_dec.c ft_printf_hex.c
 HDRN = ft_printf.h
 BSRCN =
 

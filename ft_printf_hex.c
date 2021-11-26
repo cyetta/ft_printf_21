@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_dec.c                                    :+:      :+:    :+:   */
+/*   ft_printf_hex.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/25 20:39:01 by cyetta            #+#    #+#             */
-/*   Updated: 2021/11/26 18:01:59 by cyetta           ###   ########.fr       */
+/*   Updated: 2021/11/26 19:31:18 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "libft/libft.h"
 #include "ft_printf.h"
 
-static int	ft_utoasz(unsigned int n)
+static int	ft_utoxsz(unsigned long long n, int base)
 {
 	int	size;
 
@@ -25,7 +25,7 @@ static int	ft_utoasz(unsigned int n)
 	while (n)
 	{
 		++size;
-		n = n / 10;
+		n = n / base;
 	}
 	return (size);
 }
@@ -36,35 +36,37 @@ integer received as an argument.
 n - the integer to convert.
 Return: The string representing the integer. NULL if the allocation fails.
 */
-static char	*ft_utoa(unsigned int n)
+static char	*ft_utoabase(unsigned long long n, char *base)
 {
 	char	*str;
 	int		size;
+	int		base_pw;
 
-	size = ft_utoasz(n);
+	base_pw = ft_strlen(base);
+	size = ft_utoxsz(n, base_pw);
 	str = malloc(sizeof(char) * (size + 1));
 	if (!str)
 		return (NULL);
 	str[size] = '\0';
 	if (n == 0)
-		str[0] = '0';
+		str[0] = base[0];
 	else
 	{
 		while (n)
 		{
-			str[--size] = n % 10 + '0';
-			n = n / 10;
+			str[--size] = base[(n % base_pw)];
+			n = n / base_pw;
 		}
 	}
 	return (str);
 }
 
-int	ft_prn_dec(int a)
+int	ft_prn_uhex(unsigned int a)
 {
 	char	*s;
 	int		len;
 
-	s = ft_itoa(a);
+	s = ft_utoabase(a, "0123456789abcdef");
 	if (!s)
 		return (-1);
 	len = ft_prn_str(s);
@@ -72,15 +74,29 @@ int	ft_prn_dec(int a)
 	return (len);
 }
 
-int	ft_prn_udec(unsigned int a)
+int	ft_prn_uuhex(unsigned int a)
 {
 	char	*s;
 	int		len;
 
-	s = ft_utoa(a);
+	s = ft_utoabase(a, "0123456789ABCDEF");
 	if (!s)
 		return (-1);
 	len = ft_prn_str(s);
+	free(s);
+	return (len);
+}
+
+int	ft_prn_ptr(unsigned long long a)
+{
+	char	*s;
+	int		len;
+
+	s = ft_utoabase(a, "0123456789abcdef");
+	if (!s)
+		return (-1);
+	len = ft_prn_str("0x");
+	len += ft_prn_str(s);
 	free(s);
 	return (len);
 }

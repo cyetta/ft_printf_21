@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/22 00:59:30 by cyetta            #+#    #+#             */
-/*   Updated: 2021/11/25 23:47:32 by cyetta           ###   ########.fr       */
+/*   Updated: 2021/11/26 19:29:31 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,13 @@ int	main(void)
 {
 	int		len;
 	char	*s = "test";
+	char	*t;
 
-	len = printf("hello %% %c %s world %d %i %u\n", 'A', s, 42, 21, 100);
+	t = malloc(1);
+	len = printf("%p %p hello %% %c %s world %d %i %u\n", s, t, 'A', s, 42, -21, -1);
 	printf("%d\n---ftprintf---\n", len);
-	len = ft_printf("hello %% %c %s world %d %i %u\n", 'A', s, 42, 21, 100);
+	len = ft_printf("%p %p hello %% %c %s world %d %i %u\n", s, t, 'A', s, 42, -21, -1);
 	printf("%d\n", len);
+	free(t);
 	return (0);
 }

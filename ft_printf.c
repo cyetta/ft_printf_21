@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 17:37:51 by cyetta            #+#    #+#             */
-/*   Updated: 2021/11/25 22:42:42 by cyetta           ###   ########.fr       */
+/*   Updated: 2021/11/26 19:29:12 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,12 @@ static int	parse_percent(const char *str, va_list arg)
 		return (ft_prn_dec(va_arg(arg, int)));
 	else if (*str == 'u')
 		return (ft_prn_udec(va_arg(arg, unsigned int)));
+	else if (*str == 'x')
+		return (ft_prn_uhex(va_arg(arg, unsigned int)));
+	else if (*str == 'X')
+		return (ft_prn_uuhex(va_arg(arg, unsigned int)));
+	else if (*str == 'p')
+		return (ft_prn_ptr(va_arg(arg, unsigned long long)));
 	else
 		return (write(1, str, 1));
 }
