@@ -5,3 +5,4 @@ test*
 *.d
 *.a
 printfTester/
+ft_printf_tester/
