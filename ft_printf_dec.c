@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/25 20:39:01 by cyetta            #+#    #+#             */
-/*   Updated: 2021/11/26 18:01:59 by cyetta           ###   ########.fr       */
+/*   Updated: 2021/11/26 20:22:57 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	ft_prn_dec(int a)
 
 	s = ft_itoa(a);
 	if (!s)
-		return (-1);
+		return (0);
 	len = ft_prn_str(s);
 	free(s);
 	return (len);
@@ -79,7 +79,7 @@ int	ft_prn_udec(unsigned int a)
 
 	s = ft_utoa(a);
 	if (!s)
-		return (-1);
+		return (0);
 	len = ft_prn_str(s);
 	free(s);
 	return (len);

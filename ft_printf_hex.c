@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/25 20:39:01 by cyetta            #+#    #+#             */
-/*   Updated: 2021/11/26 19:31:18 by cyetta           ###   ########.fr       */
+/*   Updated: 2021/11/26 20:23:00 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	ft_prn_uhex(unsigned int a)
 
 	s = ft_utoabase(a, "0123456789abcdef");
 	if (!s)
-		return (-1);
+		return (0);
 	len = ft_prn_str(s);
 	free(s);
 	return (len);
@@ -81,7 +81,7 @@ int	ft_prn_uuhex(unsigned int a)
 
 	s = ft_utoabase(a, "0123456789ABCDEF");
 	if (!s)
-		return (-1);
+		return (0);
 	len = ft_prn_str(s);
 	free(s);
 	return (len);
@@ -94,7 +94,7 @@ int	ft_prn_ptr(unsigned long long a)
 
 	s = ft_utoabase(a, "0123456789abcdef");
 	if (!s)
-		return (-1);
+		return (0);
 	len = ft_prn_str("0x");
 	len += ft_prn_str(s);
 	free(s);
