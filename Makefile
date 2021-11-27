@@ -44,7 +44,7 @@ include ${wildcard ${DPDS}}
 #	${MAKE} -C ${LIBFTPATH} NAME="lib${LIBFTNAME}.a"
 
 debug:
-	${MAKE} -C ${LIBFTPATH} NAME="lib${LIBFTNAME}.a"
+	${MAKE} -C ${LIBFTPATH} NAME="lib${LIBFTNAME}.a" CFLAG="${CFLAG} -g3"
 	@${MAKE} CFLAG="${CFLAG} -g3" SRCN="${SRCN} main.c" test
 
 bonus:
