@@ -1,24 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*   ft_printf_char.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/13 17:02:14 by cyetta            #+#    #+#             */
-/*   Updated: 2021/11/26 19:27:37 by cyetta           ###   ########.fr       */
+/*   Created: 2021/11/25 20:39:01 by cyetta            #+#    #+#             */
+/*   Updated: 2021/11/25 23:17:39 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_H
-# define FT_PRINTF_H
+#include <unistd.h>
+#include "libft/libft.h"
+#include "ft_printf.h"
 
-int	ft_printf(const char *str, ...);
-int	ft_prn_char(int c);
-int	ft_prn_str(char *s);
-int	ft_prn_dec(int a);
-int	ft_prn_udec(unsigned int a);
-int	ft_prn_uhex(unsigned int a);
-int	ft_prn_uuhex(unsigned int a);
-int	ft_prn_ptr(unsigned long long a);
-#endif
+int	ft_prn_char(int a)
+{
+	char	c;
+
+	c = (char)a;
+	return (write(1, &c, 1));
+}
+
+int	ft_prn_str(char *s)
+{
+	if (!s)
+		return (write(1, "(null)", 6));
+	return (write(1, s, ft_strlen(s)));
+}
