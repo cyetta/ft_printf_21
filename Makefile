@@ -2,7 +2,7 @@ NAME = libftprintf.a
 
 SRCN = ft_printf.c ft_printf_char.c ft_printf_dec.c ft_printf_hex.c
 HDRN = ft_printf.h
-BSRCN =
+BSRCN = ft_printf_bonus.c ft_printf_char.c ft_printf_dec.c ft_printf_hex.c
 
 LIBFTNAME = ft
 LIBFTPATH = libft/
@@ -45,7 +45,7 @@ include ${wildcard ${DPDS}}
 
 debug:
 	${MAKE} -C ${LIBFTPATH} NAME="lib${LIBFTNAME}.a"
-	@${MAKE} CFLAG="${CFLAG} -g3" SRCN="${SRCN} main.c" test
+	@${MAKE} CFLAG="${CFLAG} -g3" SRCN="${BSRCN} main.c" test
 
 bonus:
 	@${MAKE} SRCN="${BSRCN}" all
