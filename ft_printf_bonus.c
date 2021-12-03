@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 17:37:51 by cyetta            #+#    #+#             */
-/*   Updated: 2021/12/03 00:27:33 by cyetta           ###   ########.fr       */
+/*   Updated: 2021/12/03 17:51:27 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,23 @@ static void	flag_init(t_flag *fl)
 	fl->f_width = 0;
 }
 
-static void	parse_fldig(char *str, int *str_idx, t_flag *str_flag)
+static void	parse_fldig(const char *str, int *str_idx, t_flag *str_flag)
 {
+	int	i;
 
+	i = ft_atoi(&str[*str_idx]);
+	while (ft_isdigit(str[*str_idx]))
+		++(*str_idx);
+	--(*str_idx);
+	if (str_flag->f_point)
+		str_flag->f_prec = i;
+	else
+		str_flag->f_width = i;
 }
 
-static int	parse_flag(char *str, int *str_idx, t_flag *str_flag, va_list arg)
+static int	parse_flag(const char *str, int *str_idx, t_flag *str_flag, \
+						va_list arg)
 {
-	++(*str_idx);
 	if (str[*str_idx] == '\0')
 		return (0);
 	else if (str[*str_idx] == '0')
@@ -69,10 +78,11 @@ static int	parse_flag(char *str, int *str_idx, t_flag *str_flag, va_list arg)
 	else if (str[*str_idx] == '.')
 		str_flag->f_point = 1;
 	else if (ft_isdigit(str[*str_idx]))
-		parse_fldig(&str[*str_idx], &str_idx, &str_flag);
+		parse_fldig(str, str_idx, str_flag);
 	else
 		return (parse_percent(&str[*str_idx], arg));
-	return (parse_flag(&str[*str_idx], str_idx, str_flag, arg));
+	++(*str_idx);
+	return (parse_flag(str, str_idx, str_flag, arg));
 }
 
 /*
@@ -96,7 +106,8 @@ int	ft_printf(const char *str, ...)
 		if (str[str_idx] == '%')
 		{
 			flag_init(&str_flag);
-			str_cnt += parse_flag(&str[str_idx], &str_idx, &str_flag, arg);
+			++str_idx;
+			str_cnt += parse_flag(str, &str_idx, &str_flag, arg);
 			continue ;
 		}
 		write(1, str + str_idx, 1);

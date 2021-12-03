@@ -5,11 +5,10 @@ HDRN = ft_printf.h
 BSRCN = ft_printf_bonus.c ft_printf_char.c ft_printf_dec.c ft_printf_hex.c
 
 LIBFTNAME = ft
-LIBFTPATH = libft/
-LIBFTA = ${LIBFTPATH}lib${LIBFTNAME}.a
+LIBFTPATH = ./libft
+LIBFTA = ${LIBFTPATH}/lib${LIBFTNAME}.a
 SRCPATH =
 INCPATH = ${LIBFTPATH}
-
 
 SRCS = ${addprefix ${SRCPATH}, ${SRCN}}
 BSRCS = ${addprefix ${SRCPATH}, ${BSRCN}}
@@ -27,28 +26,27 @@ CFLAG = -Wall -Wextra -Werror
 
 all:	${NAME}
 
-${NAME}:	${OBJ}
-	${MAKE} -C ${LIBFTPATH} NAME="lib${LIBFTNAME}.a"
+${NAME}:	libft ${OBJ}
 	cp ${LIBFTA} ${NAME}
-	ar rcs ${NAME} $?
-
-test:	${OBJ}
-	${CC} ${CFLAG} -o $@ -L${LIBFTPATH} ${OBJ} -l${LIBFTNAME}
+	ar rcs ${NAME} ${OBJ}
 
 %.o : %.c
 	${CC} ${CFLAG} -MMD -c $< -o $@ -I${INCPATH}
 
 include ${wildcard ${DPDS}}
 
-#${LIBFTA}:
-#	${MAKE} -C ${LIBFTPATH} NAME="lib${LIBFTNAME}.a"
-
-debug:
+libft:
 	${MAKE} -C ${LIBFTPATH} NAME="lib${LIBFTNAME}.a"
-	@${MAKE} CFLAG="${CFLAG} -g3" SRCN="${BSRCN} main.c" test
 
-bonus:
-	@${MAKE} SRCN="${BSRCN}" all
+test:	${OBJ}
+	${CC} ${CFLAG} -o $@ -L${LIBFTPATH} ${OBJ} -l${LIBFTNAME}
+
+bonus: libft ${BOBJ}
+	cp ${LIBFTA} ${NAME}
+	ar rcs ${NAME} ${BOBJ}
+
+debug: libft
+	${MAKE} CFLAG="${CFLAG} -g3" SRCN="${BSRCN} main.c" test
 
 clean:
 	${RM} ${OBJ} ${BOBJ} ${DPDS}
@@ -60,4 +58,4 @@ fclean:	clean
 
 re:	fclean all
 
-.PHONY: all bonus clean fclean re debug
+.PHONY: all bonus clean fclean re debug libft
