@@ -2,7 +2,7 @@ NAME = libftprintf.a
 
 SRCN = ft_printf.c ft_printf_char.c ft_printf_dec.c ft_printf_hex.c
 HDRN = ft_printf.h
-BSRCN = ft_printf_bonus.c ft_printf_char.c ft_printf_dec.c ft_printf_hex.c
+BSRCN = ft_printf_bonus.c ft_printf_char_bonus.c ft_printf_dec.c ft_printf_hex.c
 
 LIBFTNAME = ft
 LIBFTPATH = ./libft

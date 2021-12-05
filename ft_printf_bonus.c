@@ -6,29 +6,26 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 17:37:51 by cyetta            #+#    #+#             */
-/*   Updated: 2021/12/03 17:51:27 by cyetta           ###   ########.fr       */
+/*   Updated: 2021/12/06 00:48:59 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdarg.h>
 #include <unistd.h>
 #include "libft/libft.h"
-#include "ft_printf.h"
+#include "ft_printf_bonus.h"
 
 /*
 str - pointer to
 */
-static int	parse_percent(const char *str, va_list arg)
+static int	parse_type(const char *str, t_flag *str_flag, va_list arg)
 {
-	int	ret_prn;
-
-	ret_prn = 1;
 	if (*str == '%')
-		return (ft_prn_char('%'));
+		return (ft_prn_char('%', str_flag));
 	else if (*str == 'c')
-		return (ft_prn_char(va_arg(arg, int)));
+		return (ft_prn_char(va_arg(arg, int), str_flag));
 	else if (*str == 's')
-		return (ft_prn_str(va_arg(arg, char *)));
+		return (ft_prn_str(va_arg(arg, char *), str_flag));
 	else if (*str == 'd' || *str == 'i')
 		return (ft_prn_dec(va_arg(arg, int)));
 	else if (*str == 'u')
@@ -48,8 +45,8 @@ static void	flag_init(t_flag *fl)
 	fl->f_minus = 0;
 	fl->f_null = 0;
 	fl->f_point = 0;
-	fl->f_prec = 0;
-	fl->f_width = 0;
+	fl->f_prec = -1;
+	fl->f_width = -1;
 }
 
 static void	parse_fldig(const char *str, int *str_idx, t_flag *str_flag)
@@ -76,11 +73,14 @@ static int	parse_flag(const char *str, int *str_idx, t_flag *str_flag, \
 	else if (str[*str_idx] == '-')
 		str_flag->f_minus = 1;
 	else if (str[*str_idx] == '.')
+	{
 		str_flag->f_point = 1;
+		str_flag->f_prec = 0;
+	}
 	else if (ft_isdigit(str[*str_idx]))
 		parse_fldig(str, str_idx, str_flag);
 	else
-		return (parse_percent(&str[*str_idx], arg));
+		return (parse_type(&str[*str_idx], str_flag, arg));
 	++(*str_idx);
 	return (parse_flag(str, str_idx, str_flag, arg));
 }
