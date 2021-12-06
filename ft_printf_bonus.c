@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 17:37:51 by cyetta            #+#    #+#             */
-/*   Updated: 2021/12/06 00:48:59 by cyetta           ###   ########.fr       */
+/*   Updated: 2021/12/07 01:19:17 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ static int	parse_type(const char *str, t_flag *str_flag, va_list arg)
 	else if (*str == 's')
 		return (ft_prn_str(va_arg(arg, char *), str_flag));
 	else if (*str == 'd' || *str == 'i')
-		return (ft_prn_dec(va_arg(arg, int)));
+		return (ft_prn_dec(va_arg(arg, int), str_flag));
 	else if (*str == 'u')
-		return (ft_prn_udec(va_arg(arg, unsigned int)));
+		return (ft_prn_udec(va_arg(arg, unsigned int), str_flag));
 	else if (*str == 'x')
 		return (ft_prn_uhex(va_arg(arg, unsigned int)));
 	else if (*str == 'X')

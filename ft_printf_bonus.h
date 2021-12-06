@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 17:02:14 by cyetta            #+#    #+#             */
-/*   Updated: 2021/12/06 00:46:34 by cyetta           ###   ########.fr       */
+/*   Updated: 2021/12/07 01:19:03 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ int	ft_printf(const char *str, ...);
 int	ft_write_sp(char symb, int n);
 int	ft_prn_char(int c, t_flag *str_flag);
 int	ft_prn_str(char *s, t_flag *str_flag);
-int	ft_prn_dec(int a);
-int	ft_prn_udec(unsigned int a);
+int	ft_prn_dec(int a, t_flag *str_flag);
+int	ft_prn_udec(unsigned int a, t_flag *str_flag);
 int	ft_prn_uhex(unsigned int a);
 int	ft_prn_uuhex(unsigned int a);
 int	ft_prn_ptr(unsigned long long a);
