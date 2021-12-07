@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/25 20:39:01 by cyetta            #+#    #+#             */
-/*   Updated: 2021/12/07 01:17:09 by cyetta           ###   ########.fr       */
+/*   Updated: 2021/12/07 23:19:38 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,7 @@
 #include "libft/libft.h"
 #include "ft_printf_bonus.h"
 
-static int	ft_utoasz(unsigned int n)
-{
-	int	size;
-
-	size = 0;
-	if (n == 0)
-		++size;
-	while (n)
-	{
-		++size;
-		n = n / 10;
-	}
-	return (size);
-}
-/*
-static int	ft_utoxsz(unsigned long long n, int base, t_flag *str_flag)
+static int	ft_utoxsz(char **s, unsigned long long n, int base, t_flag *str_flag)
 {
 	int	size;
 
@@ -42,35 +27,22 @@ static int	ft_utoxsz(unsigned long long n, int base, t_flag *str_flag)
 		++size;
 		n = n / base;
 	}
-
-
+	if (str_flag->f_point && str_flag->f_prec > size)
+		size = str_flag->f_prec;
+	else
+		str_flag->f_prec = size;
+	*s = malloc(sizeof(char) * (size + 1));
+	if (!(*s))
+		return (size);
+	(*s)[size] = '\0';
 	return (size);
 }
-
-static char	*ft_utoabase(unsigned long long n, char *base, t_flag *str_flag)
-{
-	char	*str;
-	int		size;
-	int		base_pw;
-
-	base_pw = ft_strlen(base);
-	size = ft_utoxsz(n, base_pw, str_flag);
-	str = malloc(sizeof(char) * (size + 1));
-	if (!str)
-		return (NULL);
-	str[size] = '\0';
-	if (n == 0)
-		str[0] = base[0];
-	else
+/*
+	if (str_flag->f_prec < 0)
 	{
-		while (n)
-		{
-			str[--size] = base[(n % base_pw)];
-			n = n / base_pw;
-		}
+		str_flag->f_minus = 1;
+		str_flag->f_prec = 0;
 	}
-	return (str);
-}
 */
 
 /*
@@ -79,40 +51,32 @@ integer received as an argument.
 n - the integer to convert.
 Return: The string representing the integer. NULL if the allocation fails.
 */
-static char	*ft_utoa(unsigned int n)
+static char	*ft_utoabase(unsigned long long n, char *base, t_flag *str_flag)
 {
 	char	*str;
 	int		size;
+	int		base_pw;
 
-	size = ft_utoasz(n);
-	str = malloc(sizeof(char) * (size + 1));
+	base_pw = ft_strlen(base);
+	size = ft_utoxsz(&str, n, base_pw, str_flag);
 	if (!str)
 		return (NULL);
-	str[size] = '\0';
-	if (n == 0)
-		str[0] = '0';
+	if (n == 0 && str_flag->f_point && str_flag->f_prec == 0)
+		str[0] = 0;
+	else if (n == 0)
+		str[0] = base[0];
 	else
 	{
-		while (n)
+		while (size)
 		{
-			str[--size] = n % 10 + '0';
-			n = n / 10;
+			if (n)
+				str[--size] = base[(n % base_pw)];
+			else
+				str[--size] = '0';
+			n = n / base_pw;
 		}
 	}
 	return (str);
-}
-
-int	ft_prn_dec(int a, t_flag *str_flag)
-{
-	char	*s;
-	int		len;
-
-	s = ft_itoa(a);
-	if (!s)
-		return (0);
-	len = ft_prn_str(s, str_flag);
-	free(s);
-	return (len);
 }
 
 int	ft_prn_udec(unsigned int a, t_flag *str_flag)
@@ -120,10 +84,32 @@ int	ft_prn_udec(unsigned int a, t_flag *str_flag)
 	char	*s;
 	int		len;
 
-	s = ft_utoa(a);
+	s = ft_utoabase(a, "0123456789", str_flag);
 	if (!s)
 		return (0);
 	len = ft_prn_str(s, str_flag);
+	free(s);
+	return (len);
+}
+
+int	ft_prn_dec(int a, t_flag *str_flag)
+{
+	char			*s;
+	int				len;
+	unsigned int	ua;
+
+	ua = (unsigned int) a;
+	if (a < 0)
+		ua = (unsigned int)(-a);
+	s = ft_utoabase(ua, "0123456789", str_flag);
+	if (!s)
+		return (0);
+	if (a >= 0)
+		len = ft_prn_str(s, str_flag);
+	else
+	{
+		len = ft_prn_str(s, str_flag);
+	}
 	free(s);
 	return (len);
 }

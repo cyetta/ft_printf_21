@@ -6,12 +6,13 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 17:02:14 by cyetta            #+#    #+#             */
-/*   Updated: 2021/12/07 01:19:03 by cyetta           ###   ########.fr       */
+/*   Updated: 2021/12/07 20:49:29 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_BONUS_H
 # define FT_PRINTF_BONUS_H
+# include <stdarg.h>
 
 typedef struct s_flag
 {
@@ -31,4 +32,6 @@ int	ft_prn_udec(unsigned int a, t_flag *str_flag);
 int	ft_prn_uhex(unsigned int a);
 int	ft_prn_uuhex(unsigned int a);
 int	ft_prn_ptr(unsigned long long a);
+int	ft_parse_flag(const char *str, int *str_idx, t_flag *str_flag, va_list arg);
+
 #endif
