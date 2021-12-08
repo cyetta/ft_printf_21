@@ -6,16 +6,16 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/25 20:39:01 by cyetta            #+#    #+#             */
-/*   Updated: 2021/12/07 23:19:38 by cyetta           ###   ########.fr       */
+/*   Updated: 2021/12/08 03:28:21 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
-
+#include <unistd.h>
 #include "libft/libft.h"
 #include "ft_printf_bonus.h"
 
-static int	ft_utoxsz(char **s, unsigned long long n, int base, t_flag *str_flag)
+static int	ft_utoxsz(char **s, unsigned long long n, int base, t_flag *s_flag)
 {
 	int	size;
 
@@ -27,10 +27,12 @@ static int	ft_utoxsz(char **s, unsigned long long n, int base, t_flag *str_flag)
 		++size;
 		n = n / base;
 	}
-	if (str_flag->f_point && str_flag->f_prec > size)
-		size = str_flag->f_prec;
+	if (n == 0 && s_flag->f_point && s_flag->f_prec == 0)
+		s_flag->f_prec = 0;
+	else if (s_flag->f_point && s_flag->f_prec > size)
+		size = s_flag->f_prec;
 	else
-		str_flag->f_prec = size;
+		s_flag->f_prec = size;
 	*s = malloc(sizeof(char) * (size + 1));
 	if (!(*s))
 		return (size);
@@ -63,8 +65,8 @@ static char	*ft_utoabase(unsigned long long n, char *base, t_flag *str_flag)
 		return (NULL);
 	if (n == 0 && str_flag->f_point && str_flag->f_prec == 0)
 		str[0] = 0;
-	else if (n == 0)
-		str[0] = base[0];
+//	else if (n == 0)
+//		str[0] = base[0];
 	else
 	{
 		while (size)
@@ -92,9 +94,34 @@ int	ft_prn_udec(unsigned int a, t_flag *str_flag)
 	return (len);
 }
 
+int	ft_prnwpref(const char *pref, char *uanum, t_flag *str_flag)
+{
+	char	*dest;
+	int		i;
+	int		s1_l;
+	int		s2_l;
+
+	s1_l = ft_strlen(pref);
+	s2_l = ft_strlen(uanum);
+	dest = malloc(sizeof(char) * (s1_l + s2_l + 1));
+	if (!dest)
+		return (0);
+	i = -1;
+	while (*pref)
+		dest[++i] = *pref++;
+	while (*uanum)
+		dest[++i] = *uanum++;
+	dest[++i] = 0;
+	str_flag->f_prec += s1_l;
+	i = ft_prn_str(dest, str_flag);
+	free(dest);
+	return (i);
+}
+
 int	ft_prn_dec(int a, t_flag *str_flag)
 {
 	char			*s;
+	char			*s1;
 	int				len;
 	unsigned int	ua;
 
@@ -106,10 +133,13 @@ int	ft_prn_dec(int a, t_flag *str_flag)
 		return (0);
 	if (a >= 0)
 		len = ft_prn_str(s, str_flag);
-	else
+	else if (str_flag->f_null)
 	{
-		len = ft_prn_str(s, str_flag);
+		str_flag->f_width--;
+		len = write(1, "-", 1) + ft_prn_str(s, str_flag);
 	}
+	else
+		len = ft_prnwpref("-", s, str_flag);
 	free(s);
 	return (len);
 }
