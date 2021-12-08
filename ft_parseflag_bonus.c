@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/07 20:39:50 by cyetta            #+#    #+#             */
-/*   Updated: 2021/12/07 21:48:33 by cyetta           ###   ########.fr       */
+/*   Updated: 2021/12/08 13:39:20 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@
 
 static int	parse_type(const char *str, t_flag *str_flag, va_list arg)
 {
-	if (str_flag->f_point || str_flag->f_minus)
-		str_flag->f_null = 0;
 	if (*str == '%')
 		return (ft_prn_char('%', str_flag));
 	else if (*str == 'c')
@@ -29,11 +27,11 @@ static int	parse_type(const char *str, t_flag *str_flag, va_list arg)
 	else if (*str == 'u')
 		return (ft_prn_udec(va_arg(arg, unsigned int), str_flag));
 	else if (*str == 'x')
-		return (ft_prn_uhex(va_arg(arg, unsigned int)));
+		return (ft_prn_uhex(va_arg(arg, unsigned int), str_flag));
 	else if (*str == 'X')
-		return (ft_prn_uuhex(va_arg(arg, unsigned int)));
+		return (ft_prn_uuhex(va_arg(arg, unsigned int), str_flag));
 	else if (*str == 'p')
-		return (ft_prn_ptr(va_arg(arg, unsigned long long)));
+		return (ft_prn_ptr(va_arg(arg, unsigned long long), str_flag));
 	else
 		return (write(1, str, 1));
 }
@@ -77,7 +75,8 @@ int	ft_parse_flag(const char *str, int *str_idx, t_flag *str_flag, \
 	++(*str_idx);
 	while ((str[*str_idx] != '\0'))
 	{
-		if (str[*str_idx] == '0' && !ft_isdigit(str[last_flag]))
+		if (str[*str_idx] == '0' && str[last_flag] != '.' \
+									&& !ft_isdigit(str[last_flag]))
 			str_flag->f_null = 1;
 		else if (str[*str_idx] == '-')
 			set_flag_minus(str_idx, &last_flag, str_flag);
@@ -86,7 +85,11 @@ int	ft_parse_flag(const char *str, int *str_idx, t_flag *str_flag, \
 		else if (ft_isdigit(str[*str_idx]))
 			parse_fldig(str, str_idx, &last_flag, str_flag);
 		else
+		{
+			if (str_flag->f_point || str_flag->f_minus)
+				str_flag->f_null = 0;
 			return (parse_type(&str[*str_idx], str_flag, arg));
+		}
 		++(*str_idx);
 	}
 	return (0);

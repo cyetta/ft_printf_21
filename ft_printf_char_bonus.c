@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/25 20:39:01 by cyetta            #+#    #+#             */
-/*   Updated: 2021/12/07 21:43:00 by cyetta           ###   ########.fr       */
+/*   Updated: 2021/12/08 13:26:37 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	ft_prn_char(int a, t_flag *str_flag)
 	char	c;
 
 	c = (char)a;
-	if (str_flag->f_width > 1)
+	if (str_flag->f_width >= 1)
 		str_flag->f_width -= 1;
 	if (str_flag->f_minus)
 		return (write(1, &c, 1) + ft_write_sp(' ', str_flag->f_width));

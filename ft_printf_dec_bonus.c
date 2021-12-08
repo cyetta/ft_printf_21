@@ -6,7 +6,7 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/25 20:39:01 by cyetta            #+#    #+#             */
-/*   Updated: 2021/12/08 03:28:21 by cyetta           ###   ########.fr       */
+/*   Updated: 2021/12/08 15:03:30 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,32 +20,28 @@ static int	ft_utoxsz(char **s, unsigned long long n, int base, t_flag *s_flag)
 	int	size;
 
 	size = 0;
-	if (n == 0)
-		++size;
-	while (n)
-	{
-		++size;
-		n = n / base;
-	}
-	if (n == 0 && s_flag->f_point && s_flag->f_prec == 0)
-		s_flag->f_prec = 0;
-	else if (s_flag->f_point && s_flag->f_prec > size)
+	if (n == 0 && s_flag->f_prec > 0)
 		size = s_flag->f_prec;
+	else if (n == 0)
+		++size;
 	else
-		s_flag->f_prec = size;
+	{
+		while (n)
+		{
+			++size;
+			n = n / base;
+		}
+		if (s_flag->f_point && s_flag->f_prec > size)
+			size = s_flag->f_prec;
+		else
+			s_flag->f_prec = size;
+	}
 	*s = malloc(sizeof(char) * (size + 1));
 	if (!(*s))
 		return (size);
 	(*s)[size] = '\0';
 	return (size);
 }
-/*
-	if (str_flag->f_prec < 0)
-	{
-		str_flag->f_minus = 1;
-		str_flag->f_prec = 0;
-	}
-*/
 
 /*
 Allocates (with malloc(3)) and returns a string representing the unsigned
@@ -53,7 +49,7 @@ integer received as an argument.
 n - the integer to convert.
 Return: The string representing the integer. NULL if the allocation fails.
 */
-static char	*ft_utoabase(unsigned long long n, char *base, t_flag *str_flag)
+char	*ft_utoabase(unsigned long long n, char *base, t_flag *str_flag)
 {
 	char	*str;
 	int		size;
@@ -65,8 +61,6 @@ static char	*ft_utoabase(unsigned long long n, char *base, t_flag *str_flag)
 		return (NULL);
 	if (n == 0 && str_flag->f_point && str_flag->f_prec == 0)
 		str[0] = 0;
-//	else if (n == 0)
-//		str[0] = base[0];
 	else
 	{
 		while (size)
@@ -121,7 +115,6 @@ int	ft_prnwpref(const char *pref, char *uanum, t_flag *str_flag)
 int	ft_prn_dec(int a, t_flag *str_flag)
 {
 	char			*s;
-	char			*s1;
 	int				len;
 	unsigned int	ua;
 
