@@ -6,12 +6,13 @@
 /*   By: cyetta <cyetta@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 17:02:14 by cyetta            #+#    #+#             */
-/*   Updated: 2021/12/06 00:46:34 by cyetta           ###   ########.fr       */
+/*   Updated: 2021/12/08 12:44:41 by cyetta           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_PRINTF_BONUS_H
 # define FT_PRINTF_BONUS_H
+# include <stdarg.h>
 
 typedef struct s_flag
 {
@@ -22,13 +23,18 @@ typedef struct s_flag
 	int	f_prec;
 }	t_flag;
 
-int	ft_printf(const char *str, ...);
-int	ft_write_sp(char symb, int n);
-int	ft_prn_char(int c, t_flag *str_flag);
-int	ft_prn_str(char *s, t_flag *str_flag);
-int	ft_prn_dec(int a);
-int	ft_prn_udec(unsigned int a);
-int	ft_prn_uhex(unsigned int a);
-int	ft_prn_uuhex(unsigned int a);
-int	ft_prn_ptr(unsigned long long a);
+int		ft_printf(const char *str, ...);
+int		ft_write_sp(char symb, int n);
+int		ft_prn_char(int c, t_flag *str_flag);
+int		ft_prn_str(char *s, t_flag *str_flag);
+int		ft_prn_dec(int a, t_flag *str_flag);
+int		ft_prn_udec(unsigned int a, t_flag *str_flag);
+int		ft_prnwpref(const char *pref, char *uanum, t_flag *str_flag);
+char	*ft_utoabase(unsigned long long n, char *base, t_flag *str_flag);
+int		ft_prn_uhex(unsigned int a, t_flag *str_flag);
+int		ft_prn_uuhex(unsigned int a, t_flag *str_flag);
+int		ft_prn_ptr(unsigned long long a, t_flag *str_flag);
+int		ft_parse_flag(const char *str, int *str_idx, t_flag *str_flag, \
+						va_list arg);
+
 #endif
